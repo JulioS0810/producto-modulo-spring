@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.perfumeriavioleta.productomodulo.service;
 
 import com.perfumeriavioleta.productomodulo.model.Producto;
@@ -12,23 +8,26 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Servicio que encapsula la lógica de negocio para la entidad Producto.
- * Actúa como una fachada entre el controlador y el repositorio, aplicando
- * el patrón de inyección de dependencias.
- * 
+ * Capa de servicio para la entidad {@link Producto}.
+ * <p>
+ * Contiene la lógica de negocio relacionada con productos. Actúa como intermediario
+ * entre el controlador y el repositorio, permitiendo agregar reglas de negocio
+ * en el futuro (validaciones, cálculos, etc.).
+ * </p>
+ *
  * @author Julio César Suárez Garavito
  * @version 1.0
  * @since 2026-03-15
  */
 @Service
 public class ProductoService {
-    
+
     private final ProductoRepository productoRepository;
 
     /**
-     * Constructor que inyecta el repositorio de productos.
-     * 
-     * @param productoRepository el repositorio a inyectar
+     * Constructor con inyección de dependencia del repositorio.
+     *
+     * @param productoRepository repositorio JPA de productos
      */
     public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
@@ -36,7 +35,7 @@ public class ProductoService {
 
     /**
      * Obtiene todos los productos del catálogo.
-     * 
+     *
      * @return lista completa de productos
      */
     public List<Producto> obtenerTodos() {
@@ -44,20 +43,20 @@ public class ProductoService {
     }
 
     /**
-     * Busca un producto por su ID.
-     * 
-     * @param id el identificador único del producto
-     * @return Optional con el producto si existe, vacío si no
+     * Busca un producto por su identificador único.
+     *
+     * @param id ID del producto
+     * @return Optional que contiene el producto si existe, o vacío
      */
     public Optional<Producto> obtenerPorId(Integer id) {
         return productoRepository.findById(id);
     }
 
     /**
-     * Guarda un nuevo producto o actualiza uno existente.
-     * 
-     * @param producto el producto a guardar
-     * @return el producto guardado con su ID asignado
+     * Guarda un producto (nuevo o actualizado).
+     *
+     * @param producto producto a persistir
+     * @return producto guardado con el ID asignado (si es nuevo)
      */
     public Producto guardar(Producto producto) {
         return productoRepository.save(producto);
@@ -65,17 +64,17 @@ public class ProductoService {
 
     /**
      * Elimina un producto por su ID.
-     * 
-     * @param id el identificador del producto a eliminar
+     *
+     * @param id identificador del producto a borrar
      */
     public void eliminar(Integer id) {
         productoRepository.deleteById(id);
     }
 
     /**
-     * Busca productos por marca.
-     * 
-     * @param marca el nombre de la marca
+     * Busca productos por marca (coincidencia exacta).
+     *
+     * @param marca nombre de la marca
      * @return lista de productos de esa marca
      */
     public List<Producto> buscarPorMarca(String marca) {
@@ -84,19 +83,19 @@ public class ProductoService {
 
     /**
      * Busca productos por género.
-     * 
-     * @param genero el género del perfume (Hombre, Mujer, Unisex)
-     * @return lista de productos del género especificado
+     *
+     * @param genero género (Hombre, Mujer, Unisex)
+     * @return lista de productos del género indicado
      */
     public List<Producto> buscarPorGenero(Genero genero) {
         return productoRepository.findByGenero(genero);
     }
 
     /**
-     * Busca productos por nombre (búsqueda parcial, insensible a mayúsculas).
-     * 
-     * @param nombre el texto a buscar dentro del nombre
-     * @return lista de productos que contienen el texto en su nombre
+     * Busca productos cuyo nombre contenga el texto dado (búsqueda insensible a mayúsculas).
+     *
+     * @param nombre texto parcial o completo del nombre
+     * @return lista de productos que coinciden
      */
     public List<Producto> buscarPorNombre(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);

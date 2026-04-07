@@ -5,8 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Clase principal de la aplicación Spring Boot para el módulo de productos.
- * Esta clase arranca la aplicación y configura el contexto de Spring.
- * 
+ * <p>
+ * Esta clase arranca el contenedor de Spring, escanea componentes, configura
+ * la autoconfiguración y lanza la aplicación embebida (Tomcat por defecto).
+ * </p>
+ *
  * @author Julio César Suárez Garavito
  * @version 1.0
  * @since 2026-03-15

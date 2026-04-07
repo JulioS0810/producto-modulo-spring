@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.perfumeriavioleta.productomodulo.repository;
 
 import com.perfumeriavioleta.productomodulo.model.Producto;
@@ -11,10 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Repositorio JPA para la entidad Producto.
- * Proporciona métodos CRUD básicos y operaciones de consulta personalizadas
- * para acceder a la tabla 'productos' de la base de datos.
- * 
+ * Repositorio JPA para la entidad {@link Producto}.
+ * <p>
+ * Extiende {@link JpaRepository} lo que proporciona métodos CRUD estándar
+ * (save, findById, findAll, delete, etc.). Además se definen métodos de consulta
+ * personalizados mediante convención de nombres.
+ * </p>
+ *
  * @author Julio César Suárez Garavito
  * @version 1.0
  * @since 2026-03-15
@@ -23,36 +22,38 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     /**
-     * Busca productos por su marca.
-     * 
-     * @param marca el nombre de la marca a buscar (no debe ser nulo)
-     * @return lista de productos que pertenecen a la marca especificada
+     * Obtiene todos los productos que coinciden con una marca específica.
+     *
+     * @param marca nombre de la marca (p.ej., "Chanel", "Dior")
+     * @return lista de productos de esa marca (vacía si no hay)
      */
     List<Producto> findByMarca(String marca);
 
     /**
-     * Busca productos por su género.
-     * 
-     * @param genero el género del perfume (Hombre, Mujer o Unisex)
+     * Obtiene productos según su género (Hombre, Mujer o Unisex).
+     *
+     * @param genero el género a filtrar
      * @return lista de productos del género indicado
      */
     List<Producto> findByGenero(Genero genero);
 
     /**
      * Busca productos cuyo nombre contenga el texto especificado,
-     * ignorando mayúsculas y minúsculas.
-     * 
-     * @param nombre el texto a buscar dentro del nombre del producto
-     * @return lista de productos que coinciden con la búsqueda parcial
+     * ignorando mayúsculas/minúsculas. Útil para búsquedas parciales.
+     *
+     * @param nombre texto a buscar dentro del nombre del producto
+     * @return lista de productos que contienen ese texto
      */
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
 
     /**
-     * Busca productos con una cantidad en stock menor al valor dado.
-     * Útil para alertas de inventario bajo.
-     * 
-     * @param stockMin el valor límite de stock (productos con stock menor a este valor)
-     * @return lista de productos con stock inferior al especificado
+     * Obtiene productos con stock por debajo de un umbral.
+     * <p>
+     * Este método se puede usar para generar alertas de inventario bajo.
+     * </p>
+     *
+     * @param stockMin valor límite (productos con stock menor a este número)
+     * @return lista de productos con stock bajo
      */
     List<Producto> findByStockLessThan(Integer stockMin);
 }

@@ -8,9 +8,12 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 /**
- * Clase que representa la entidad Producto, mapeada a la tabla 'productos' de la base de datos.
- * Contiene los atributos básicos de un producto en el catálogo de Perfumería Violeta.
- * 
+* Entidad JPA que representa la tabla {@code productos} en la base de datos.
+ * <p>
+ * Almacena información completa de cada perfume: nombre, marca, concentración,
+ * género, precio y stock. Es la base del catálogo de la perfumería.
+ * </p>
+ *
  * @author Julio César Suárez Garavito
  * @version 1.0
  * @since 2026-03-15
