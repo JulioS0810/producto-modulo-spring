@@ -14,15 +14,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Controlador para autenticación y registro de usuarios.
- * <p>
- * Expone endpoints públicos para registrar un nuevo usuario y para hacer login.
- * En ambos casos se devuelve un token JWT si la operación es exitosa.
- * </p>
+ * Controlador REST para los servicios de autenticación.
+ * Expone endpoints de registro y login.
+ * 
+ * @author Julio César Suárez Garavito
+ * @version 1.0
+ * @since 2026-04-06
  */
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") // Permite peticiones desde cualquier origen (útil para frontend)
 public class AuthController {
 
     private final AuthService authService;
@@ -35,15 +36,13 @@ public class AuthController {
 
     /**
      * Registra un nuevo usuario en el sistema.
-     * <p>
-     * Valida que el email no esté duplicado, encripta la contraseña y devuelve un token.
-     * </p>
-     *
-     * @param usuario objeto con nombre, email y password (validado con @Valid)
-     * @return ResponseEntity con el token y datos del usuario o mensaje de error
+     * 
+     * @param usuario Objeto Usuario con nombre, email y password (válido)
+     * @return ResponseEntity con mensaje de éxito o error
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody Usuario usuario) {
+        // Validar si el email ya existe
         if (authService.existeEmail(usuario.getEmail())) {
             return ResponseEntity.badRequest().body(
                 Map.of("success", false, "mensaje", "El email ya está registrado")
@@ -60,11 +59,10 @@ public class AuthController {
     }
 
     /**
-     * Autentica a un usuario existente.
-     *
-     * @param credenciales mapa con las claves "email" y "password"
-     * @return ResponseEntity con el token si la autenticación es correcta,
-     *         o error 401 si falla
+     * Autentica a un usuario y devuelve un token JWT.
+     * 
+     * @param credenciales Mapa con email y password
+     * @return ResponseEntity con mensaje "autenticación satisfactoria" o "error en la autenticación"
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenciales) {
@@ -87,10 +85,10 @@ public class AuthController {
     }
 
     /**
-     * Maneja las excepciones de validación de beans (cuando falla @Valid).
-     *
-     * @param ex excepción lanzada por Spring
-     * @return ResponseEntity con un mensaje de error detallado
+     * Maneja las excepciones de validación (cuando falla @Valid).
+     * 
+     * @param ex Excepción lanzada por validación
+     * @return ResponseEntity con mensaje de error detallado
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {

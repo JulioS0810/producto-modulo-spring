@@ -5,12 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
- * Entidad que representa la tabla {@code usuarios} en la base de datos.
- * <p>
- * Almacena la información de los usuarios registrados para autenticación.
- * La contraseña se guarda encriptada (BCrypt) y el email es único.
- * </p>
- *
+ * Entidad que representa la tabla 'usuarios' en la base de datos.
+ * Almacena la información de los usuarios para autenticación.
+ * 
  * @author Julio César Suárez Garavito
  * @version 1.0
  * @since 2026-04-02
@@ -23,32 +20,35 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * Nombre completo del usuario. No puede estar vacío.
+     */
     @NotBlank(message = "El nombre no puede estar vacío")
     @Column(nullable = false, length = 100)
     private String nombre;
 
+    /**
+     * Email del usuario. Debe ser único y no puede estar vacío.
+     */
     @NotBlank(message = "El email no puede estar vacío")
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    /**
+     * Contraseña encriptada del usuario. No puede estar vacía.
+     */
     @NotBlank(message = "La contraseña no puede estar vacía")
     @Column(nullable = false, length = 255)
     private String password;
 
+    /**
+     * Fecha y hora del registro. Se asigna automáticamente.
+     */
     @Column(name = "fecha_registro", updatable = false)
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 
-    // Constructor vacío (requerido por JPA)
-
+    // Constructores
     public Usuario() {}
-
-    /**
-     * Constructor útil para crear un usuario sin ID (se genera automáticamente).
-     *
-     * @param nombre   nombre completo del usuario
-     * @param email    correo electrónico (único)
-     * @param password contraseña en texto plano (se encriptará antes de guardar)
-     */
 
     public Usuario(String nombre, String email, String password) {
         this.nombre = nombre;
@@ -56,7 +56,7 @@ public class Usuario {
         this.password = password;
     }
 
-    // Getters y Setters
+    // Getters y Setters (documentar brevemente cada uno si se desea)
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * Servicio encargado de la lógica de registro y autenticación de usuarios.
- * <p>
- * Utiliza BCrypt para el hash de contraseñas y delega la persistencia en
- * {@link UsuarioRepository}.
- * </p>
+ * Servicio que maneja la lógica de registro y autenticación de usuarios.
+ * 
+ * @author Julio César Suárez Garavito
+ * @version 1.0
+ * @since 2026-04-06
  */
 @Service
 public class AuthService {
@@ -24,13 +24,10 @@ public class AuthService {
     }
 
     /**
-     * Registra un nuevo usuario en el sistema.
-     * <p>
-     * La contraseña en texto plano se encripta con BCrypt antes de guardarla.
-     * </p>
-     *
-     * @param usuario objeto con los datos del usuario (sin ID)
-     * @return el usuario guardado con su ID generado
+     * Registra un nuevo usuario. La contraseña se encripta antes de guardar.
+     * 
+     * @param usuario Objeto Usuario (sin encriptar)
+     * @return Usuario guardado (con ID asignado)
      */
     public Usuario registrar(Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
@@ -38,10 +35,10 @@ public class AuthService {
     }
 
     /**
-     * Autentica a un usuario comprobando email y contraseña.
-     *
-     * @param email      email del usuario
-     * @param passwordRaw contraseña en texto plano proporcionada en el login
+     * Autentica a un usuario verificando email y contraseña.
+     * 
+     * @param email Email del usuario
+     * @param passwordRaw Contraseña en texto plano
      * @return Optional con el usuario si las credenciales son correctas, vacío si no
      */
     public Optional<Usuario> autenticar(String email, String passwordRaw) {
@@ -54,9 +51,9 @@ public class AuthService {
 
     /**
      * Verifica si un email ya está registrado.
-     *
-     * @param email email a consultar
-     * @return true si ya existe, false si está disponible
+     * 
+     * @param email Email a verificar
+     * @return true si existe, false si está disponible
      */
     public boolean existeEmail(String email) {
         return usuarioRepository.existsByEmail(email);
